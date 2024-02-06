@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import TextsmsIcon from "@mui/icons-material/Textsms";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import Addpost from "./Addpost";
 import PostDialog from "./PostDialog";
-import TextsmsIcon from "@mui/icons-material/Textsms";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import axios from "axios";
 
 // 스타일드 컴포넌트를 사용하여 스타일 지정
 const Container = styled.div`

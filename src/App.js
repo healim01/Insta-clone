@@ -1,6 +1,6 @@
-import { ReactQueryDevtools } from "react-query/devtools";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { RecoilRoot } from "recoil";
 
 import Router from "./Router";

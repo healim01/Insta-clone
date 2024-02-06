@@ -1,19 +1,20 @@
 import React from "react";
-import styled from "styled-components";
-import { useMediaQuery } from "react-responsive";
-import { GrHomeRounded } from "react-icons/gr";
-import { IoSearchOutline } from "react-icons/io5";
-import { IoCompassOutline } from "react-icons/io5";
-import { MdVideoSettings } from "react-icons/md";
-import { IoPaperPlaneOutline } from "react-icons/io5";
-import { IoIosHeartEmpty } from "react-icons/io";
 import { BsPlusSquare } from "react-icons/bs";
-import { IoLogoInstagram } from "react-icons/io";
+import { GrHomeRounded } from "react-icons/gr";
+import { IoIosHeartEmpty, IoLogoInstagram } from "react-icons/io";
+import { IoCompassOutline, IoPaperPlaneOutline, IoSearchOutline } from "react-icons/io5";
+import { MdVideoSettings } from "react-icons/md";
+import { PiUserCircleThin } from "react-icons/pi";
 import { RiMenuLine } from "react-icons/ri";
 import { SiInstagram } from "react-icons/si";
-import { PiUserCircleThin } from "react-icons/pi";
+import { useMediaQuery } from "react-responsive";
+import styled from "styled-components";
+import Addpost from "../pages/Addpost";
 // import MyProfileImg from "../img/myprofile.jpeg";
 // import InstagramLogoImg from "../img/instagramLogo.png";
+
+
+
 
 const Logo = styled.div`
   width: 100%;
@@ -52,6 +53,9 @@ const Box = styled.div`
 const IconTextContainer = styled.tr`
   display: flex;
   align-items: center;
+  &:active {
+    transform: scale(0.9); // 클릭 시 작은 크기로 축소되는 효과
+  }
 `;
 
 const CssTaskButton = styled.button`
@@ -63,10 +67,12 @@ const CssTaskButton = styled.button`
   padding: 0;
 `;
 
-const SideBar = () => {
+
+const SideBar = ({ setIsOpen }) => {
   const isPc = useMediaQuery({
     query: "(min-width:1300px)",
   });
+
   const nonPC = useMediaQuery({
     query: "(max-width:1299px)",
   });
@@ -110,14 +116,13 @@ const SideBar = () => {
               알림
             </IconTextContainer>
             <Box />
-            <CssTaskButton
-              onClick={() =>
-                window.open("https://leehannaa.github.io/likeLionCss/")
-              }
-            >
-              <BsPlusSquare style={IconStyle} />
-              CSS TASK
-            </CssTaskButton>
+            
+            <IconTextContainer>
+            <Addpost onClick={() => setIsOpen(true)}>
+                <BsPlusSquare style={IconStyle} />
+              </Addpost>
+              게시물 추가
+            </IconTextContainer>
             <Box />
             <IconTextContainer style={{ fontWeight: "bold" }}>
               <div

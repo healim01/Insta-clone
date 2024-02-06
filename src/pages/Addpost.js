@@ -16,6 +16,9 @@ const AddPostButton = styled(IconButton)`
     height: 100%;
     object-fit: cover;
   }
+  &:active {
+    transform: scale(0.9); // 클릭 시 작은 크기로 축소되는 효과
+  }
 `;
 
 const PreviewImage = styled('img')`
@@ -77,6 +80,7 @@ const Addpost = ({ addPost }) => {
       {/* 버튼 사진 보여주는 것 변경 금지 */}
       <AddPostButton onClick={handleClickOpen}>
         <img src={PlusImage} alt="" />
+        
       </AddPostButton>
 
       {/* 버튼의 기능 하나하나 구현 */}
