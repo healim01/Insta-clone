@@ -9,6 +9,7 @@ import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import fullHeart from "../icon/fullHeart.png";
 import heart from "../icon/heart.png";
+import axios from "axios";
 
 const profiles = {
   u_id: 1,
@@ -84,22 +85,6 @@ const HeartImg = styled("img")({
   objectFit: "cover",
 });
 
-/*
-const pool = require('./db'); db.js 파일을 만든다면, 여기에서 만든 mariadb 연결 객체 불러오기
-<db.js>
-const mariadb = require('mariadb');
-
-const pool = mariadb.createPool({
-  host: 'your_host',
-  user: 'your_user',
-  password: 'your_password',
-  database: 'your_database',
-  connectionLimit: 5,
-});
-
-module.exports = pool;
-*/
-
 const Row = styled("div")({
   width: "100%",
   display: "grid",
@@ -110,67 +95,49 @@ const Row = styled("div")({
   marginBottom: "8px",
 });
 
-export default function PostDialog({ open, onClose, post }) {
+export default function PostDialog({ open, onClose, post, user}) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
   useEffect(() => {
-    // if (pool) {
-    //   fetchCommentsFromDatabase(post.p_id);
-    // } else {
-    //   setComments(dummy_comments);
-    // }
-  }, [post]);
+    if (open && post) {
+      fetchCommentsFromDatabase(post.postId);
+    }
+  }, [open, post]);
 
   const fetchCommentsFromDatabase = async (postId) => {
     try {
-      // if (pool) {
-      //   const connection = await pool.getConnection();
-      //   const [rows] = await connection.query(
-      //     "SELECT * FROM comments WHERE post_id = ?",
-      //     [postId]
-      //   );
-      //   connection.release();
-      //   setComments(rows);
-      // }
+      const response = await axios.get(`http://localhost:8080/comment/read/${postId}`);
+      setComments(response.data);
     } catch (error) {
-      console.error("Error fetching comments:", error);
+      console.error('Error fetching data:', error);
     }
   };
-
+  
   const addComment = async () => {
     try {
-      // if (pool && newComment.trim() !== "") {
-      //   const connection = await pool.getConnection();
-      //   await connection.query(
-      //     "INSERT INTO comments (post_id, text, username, image) VALUES (?, ?, ?, ?)",
-      //     [
-      //       post.p_id,
-      //       newComment,
-      //       "c_id", // 변경 필요
-      //       "https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/67836763_542983346542742_576946324126040064_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=7f8c78&_nc_ohc=kFamEBZEbR4AX-Bunxe&_nc_ht=scontent-ssn1-1.xx&oh=00_AfDlaxZTI8Ov2gKBrDknug0GK1x6RWmiQNXX3BGuhAVCag&oe=65D476F3",
-      //     ]
-      //   );
-      //   connection.release();
-      //   fetchCommentsFromDatabase(post.p_id);
-      //   setNewComment("");
-      // }
+      if (newComment.trim() !== "") {
+        await axios.post('http://localhost:8080/comment/create', {
+          post_id: post.postId,
+          text: newComment,
+          username: user.userName,
+          image: user.userImage,
+        });
+  
+        fetchCommentsFromDatabase(post.postId);
+        setNewComment("");
+      }
     } catch (error) {
-      console.error("Error adding comment:", error);
+      console.error('Error creating comment:', error);
     }
   };
-
+  
   const deleteComment = async (commentIndex) => {
     try {
-      // const connection = await pool.getConnection();
-      // await connection.query("DELETE FROM comments WHERE comment_id = ?", [
-      //   comments[commentIndex].comment_id,
-      // ]);
-      // connection.release();
-
-      fetchCommentsFromDatabase(post.p_id);
+      await axios.delete(`http://localhost:8080/comment/delete/${comments[commentIndex].commId}`);
+      fetchCommentsFromDatabase(post.postId);
     } catch (error) {
-      console.error("Error deleting comment:", error);
+      console.error('Error deleting comment:', error);
     }
   };
 
